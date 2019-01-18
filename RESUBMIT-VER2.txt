@@ -1,0 +1,53 @@
+﻿Modify project by Thikamporn  Simud  5910401033
+<<การเปลี่ยนแปลงที่เกิดขึ้น>>
+- จาก comment " การสืบทอดยังไม่ถูกต้อง MoleHit กับ Mole เป็น object เดียวกันที่มีสภาพต่างกัน ไม่ใช่ object ใหม่" จึงได้ทำการลบ MoleHit class ออก
+- มีการสร้าง package ขึ้นมาเก็บ source code เพื่อให้เข้าถึงง่าย ประกอบด้วย
+	- pangMoleGameController ประกอบด้วย CreatorController.java, HowToPlayController.java, IntroPangMoleGameController.java, PangMoleGamePlayController.java, MoleyKeyAction.java และ Main.java
+	- pangMoleGameModel ประกอบด้วย Animals.java, Background.java, BananaItem.java, Bird.java, Clouds.java, Draw2DObject.java,  Mole.java,  Monkey.java
+	- pangMoleGameView ประกอบด้วย buttonStyle.css, creator.fxml, howToPlay.fxml, introPangMoleGame.fxml, pangMoleGamePlay.fxml
+- เนื่องจากครั้งก่อนที่ส่งงานไปใช้หลักการ inheritance ไม่เหมาะสมจึงมีการสร้าง Animals ซึ่งเป็น abstract class มาเป็น Superclass ของ Mole, Monkey และ Bird
+- มีการสร้าง draw2DObject interface ขึ้นเนื่องจาก class อื่นๆ มี draw(); เหมือนกัน แต่ทำงานต่างกัน โดย  Animals, Background, BananaItem และ Clouds ได้ทำการ implement ไปด้วย
+- แนบไฟล์ UML อันใหม่ และ jar file อันใหม่ไปให้ด้วยค่ะ
+<<รายการไฟล์ที่แก้ไข>>
+- Bird.java 
+	1. ได้เปลี่ยนชื่อจาก colorBody เป็น birdBodyColor และมีการเพิ่ม attribute คือ birdWingColor ซึ่งรับค่าผ่าน พารามิเตอร์ wingColor ใน constructor ด้วย
+	2. สร้าง drawWing(); และมีการใส่สีของปีกตาม  birdWingColor
+	3. override method draw(); จาก Superclass โดยเพิ่ม drawWing(); เข้าไป
+	4. เนื่องจากศืบทอด drawBody(); และ drawBody(); จาก Superclass มาซึ่งเป็น abstract method จึงทำการ override ทั้ง 2 method
+- Mole.java
+	1. ได้เปลี่ยนชื่อจาก colorBody เป็น moleBodyColor และมีการเพิ่ม attribute คือ hitStatus เช็คว่า mole โดนตีจนทนไม่ไหวแล้วหรือยัง และ resistanceToHit  เก็บค่าความทนทานต่อการตี โดยความทนทานการจากการสุ่ม
+ซึ่งจะทำการสุ่มหลักจาก สร้าง Mole object กระทำโดย constructor
+	2. ได้เพิ่ม getResistanceToHit() เพื่อรีเทิร์นค่า resistanceToHit และ setResistanceToHit(int resistanceToHit) สำหรับ set ค่า resistanceToHit ที่มีการลดลงไปที่ละ 1 หลังจากโดนตีในแต่ละครั้ง นอกจากนั้น
+เพิ่ม setHitStatus(boolean hitStatus) สำหรับ set status ของ mole ที่ถูกตีจนทนไม่ไหว เพื่อที่จะได้มีการวาดหน้า mole ที่ต่างกันออกไป
+	3. เนื่องจากททำการลบ MoleHit class ไป จึงนำ drawStarOnHead(); และ drawWound(); ซึ่งมี Access modifier คือ public มาใส่ ที่เป็น public เพราะคลาสอื่นมีการเรียกใช้ 2 method นี้ 
+นอกจากนั้นมีการสร้าง drawNormalEyes(); ซึ่งจะวาดตาที่ปกติ และ EyesAfterHit(); ซึ่งวาดตาที่ต่างไปเนื่องจากการโดนตีจนทนไม่ไหวนั่นเอง ทั้ง 2 method มี Access modifier คือ private
+	4. มีการสร้างเงื่อนไขในการ drawFace(); ถ้า hitStatus = false จะเรียก drawNormalEyes(); แต่ถ้า hitStatus = true จะเรียก  drawStarOnHead(); , drawWound();  และ EyesAfterHit();
+	5. เนื่องจากศืบทอด drawBody(); และ drawFace(); จาก Superclass มาซึ่งเป็น abstract method จึงทำการ override ทั้ง 2 method
+- Monkey.java
+	1. มีการเพิ่ม attribute คือ tissueMonkeyColor เก็บค่าสีของใบหน้า มือ เท้า หูด้านใน
+	2. override method draw(); จาก Superclass โดยเพิ่ม drawBananaInHand(); เข้าไป
+	3. เนื่องจากศืบทอด drawBody(); และ drawFace(); จาก Superclass มาซึ่งเป็น abstract method จึงทำการ override ทั้ง 2 method
+- Background.java, BananaItem.java และ Clouds.java มีการ override draw(); เพราะได้มีการ implement มาจาก draw2DObject interface
+- CreatorController.java
+	1. มีการแก้ไขให้ static type ของ bird กับ Monkey เป็น Animals เพื่อให้เกิด polymorphism จากการใช้ draw(); [line 32-33]
+	2. มีการใช้ ArrayList ในการเก็บ object ของ Mole ที่มีหลายตัว [line 31] และสร้าง Group ขึ้นมาเพื่อเก็บ ArrayList ของ Mole [line 30]
+	3. การสร้าง bird object ส่งค่า wingColor เข้าไปเพิ่ม [line 62]
+	4.object ของ Background, BananaItem, Bird, Mole, Clouds และ  Monkey มีการเรียกใช้ method  draw(); [line 72] 
+	5. ในการวาด mole object แต่ละตัวใช้การวนลูป และมีเงื่อนไขถ้าตัวไหนอยากให้เป็นตัวที่บาดเจ็บ ได้ทำการ set hitStatus = true [line 78]
+- IntroPangMoleGameController.java
+	1. มีการแก้ไขให้ static type ของ Monkey เป็น Animals เพื่อให้เกิด polymorphism จากการใช้ draw(); [line 30]
+	2. มีการใช้ ArrayList ในการเก็บ object ของ Mole ที่มีหลายตัว [line 29] และสร้าง Group ขึ้นมาเพื่อเก็บ ArrayList ของ Mole [line 28]
+	3. ในการวาด mole object แต่ละตัวใช้การวนลูป และมีเงื่อนไขถ้าตัวไหนอยากให้เป็นตัวที่บาดเจ็บ ได้ทำการ set hitStatus = true [line 76]
+	4.object ของ Background, BananaItem, Mole, Clouds และ  Monkey มีการเรียกใช้ method  draw(); [line 71] 
+	5. ที่ bananaHitMoleAnimation ใน drawMoleHit KeyFrame ได้มีการเรียกใช้ drawStarOnHead(); และ drawWound(); เนื่องจากต้องการวาด 
+mole ที่มีตาแบบปกติแต่เกิดการบาดเจ็บ  [line 105] 
+- PangMoleGamePlayController.java
+	1. ลบ int[5] resistanceToHit และการ random ค่า resistanceToHit ออก เนื่องจากย้อยไปใส่ใน Mole class แทน
+	2. มีการใช้ ArrayList ในการเก็บ object ของ Mole และ Bird ที่มีหลายตัว [line 39] และสร้าง Group ขึ้นมาเพื่อเก็บ ArrayList ของ Mole และ Bird [line 38]
+	3. ใช้ foreach loop ที่มี type ของ object เป็น Animals ในการวาด Mole และ Bird object เพื่อให้เกิด polymorphism ในการเรียกใช้ draw(); method [line 262-268]
+	4. object ของ Background, BananaItem, Clouds และ  Monkey มีการเรียกใช้ method  draw(); [line 258] 
+	5. clickOnMole method แก้ไขพารามิเตอร์โดย ลบ number พารามิเตอร์ ออก [line 161]
+	6. [line 170] เนื่องจากมีการย้าย resistanceToHit ใส่ไว้ใน Mole class ดังนั้นการเช็คเงื่อนไขว่ากล้วยได้ชนกับ mole หรือไม่ จึงมีการเรียก getResistanceToHit();
+มาใช้ในการเช็คความทนทานที่เหลืออยู่ และใช้ setResistanceToHit(int resistanceToHit) ในการ set ค่า ResistanceToHit ที่มีการลดลง 1หลังจากถูกตีไปในแต่ละครั้ง
+	7. [line 190] แก้ไข drawMoleHit method โดย fadeOutFadeInMole KeyFrame มีการเรียกใช้ moleHitAnimation method อีกครั้ง และ drawNewMoleHit KeyFrame
+มีการ set hitStatus = true และเรียก draw(); เพื่อวาด mole ที่มีลักษณะหน้าตาบาดเจ็บ

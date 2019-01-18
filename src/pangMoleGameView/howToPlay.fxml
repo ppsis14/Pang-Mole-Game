@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pangMoleGameController.HowToPlayController">
+   <children>
+      <Pane fx:id="pane" prefHeight="600.0" prefWidth="700.0">
+         <children>
+            <Button id="record-sales" fx:id="startGame" layoutX="403.0" layoutY="478.0" mnemonicParsing="false" onAction="#handleButtonStartGame" stylesheets="@buttonStyle.css" text="Start Game" />
+            <Label fx:id="describeBox" alignment="TOP_LEFT" layoutX="110.0" layoutY="147.5" opacity="0.9" prefHeight="300.0" prefWidth="490.0" style="-fx-background-color: #E8E8E8;">
+               <cursor>
+                  <Cursor fx:constant="DISAPPEAR" />
+               </cursor></Label>
+            <Button id="record-sales" fx:id="creator" layoutX="195.0" layoutY="478.0" mnemonicParsing="false" onAction="#handleButtonCreator" stylesheets="@buttonStyle.css" text="Game Creator" />
+            <Label fx:id="howToPlay" layoutX="200.0" layoutY="86.0" text="HOW TO PLAY" textFill="#134a22">
+               <font>
+                  <Font name="Cooper Black" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="describeGame" alignment="TOP_LEFT" layoutX="135.0" layoutY="174.0" prefHeight="241.0" prefWidth="440.0">
+               <font>
+                  <Font size="17.0"/>
+               </font></Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
